@@ -19,13 +19,14 @@ def format_fft_data(EEG_data):
 
     samples_per_sec = 256
 
-    fftData = np.fft.fft(EEG_data)
+    FFT_data = np.fft.fft(EEG_data)
     freq = np.fft.fftfreq(len(EEG_data))*samples_per_sec
 
 # Drop negative Fourier
     freq = freq[0:int(len(freq)/2)]
-    fftData = fftData[0:int(len(fftData)/2)]
-    return(freq,fftData)
+    FFT_data = fftdata[0:int(len(FFT_data)/2)]
+    FFT_data=np.sqrt(FFT_data.real**2 + FFT_data.imag**2)
+    return freq,FFT_data
 
 
 #==================================================
