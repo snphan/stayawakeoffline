@@ -78,3 +78,7 @@ if __name__ == "__main__":
     # Process the second channel only:
     eeg_times, channel_2 = list(data['Time']), list(data['Channel 2'])
     times, ba_ratios = gen_ba_ratios(eeg_times, channel_2)
+    plt.plot(times, ba_ratios)
+    plt.xlabel('Time (s)')
+    plt.ylabel('BA_ratios')
+    plt.show()
