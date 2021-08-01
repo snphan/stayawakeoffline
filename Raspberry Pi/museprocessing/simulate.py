@@ -14,8 +14,9 @@ def chunks(lst, n):
     for i in range(0, len(lst), n):
         yield lst[i:i + n]
 
-def gen_ba_ratios(time, eeg):
-    '''ba = beta/alpha ratios. Process only one stream
+def ba_static_window(time, eeg):
+    '''ba = beta/alpha ratios. Process only one stream using the staic window method.
+    
 
     Params
     ------
@@ -49,7 +50,9 @@ def gen_ba_ratios(time, eeg):
     return times, ba_ratios
 
 
-
+def ba_moving_window(time, eeg, step, window_len):
+    '''ba =beta/alpha ratio. Process the data using the moving window method'''
+    pass
     
 
     
@@ -77,8 +80,9 @@ if __name__ == "__main__":
 
     # Process the second channel only:
     eeg_times, channel_2 = list(data['Time']), list(data['Channel 2'])
-    times, ba_ratios = gen_ba_ratios(eeg_times, channel_2)
+    times, ba_ratios = ba_static_window(eeg_times, channel_2)
     plt.plot(times, ba_ratios)
     plt.xlabel('Time (s)')
     plt.ylabel('BA_ratios')
+    plt.title(input_path.name)
     plt.show()
