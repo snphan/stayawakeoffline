@@ -6,6 +6,11 @@ def add(a, b):
     '''A dummy function to test if the pytests library is working'''
     return a+b
 
+def filterNoise(li, lowerBound, upperBound):
+    for ele in li:
+        if ele < lowerBound or ele > upperBound
+        li.remove(ele)
+    return li
 
 def format_fft_data(EEG_data):
     '''Should output the x and y fourier transform data.
