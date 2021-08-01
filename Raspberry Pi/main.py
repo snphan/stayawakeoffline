@@ -6,7 +6,7 @@ lowerBound = 100
 upperBound = 200
 endFlag = False
 
-def processData(eeg_data): #bluetooth params passed????
+def processData(chOne, chTwo, chThree, chFour, ref, timeSt): #bluetooth params passed????
     #process data from muse
     return 150
     #returns data from muse as single or tuples of frequencies
@@ -26,12 +26,24 @@ def main():
     
     while(True):
         while endFlag == False:
-
-            curr = processData()
+            time.sleep(3)
             EEG_data = M_wrapper.pull_eeg()
-            processData(EEG_data)
-            time.sleep(5)
-            print("sleeped \n\n\n\n\n")
+            chOne = []
+            chTwo = []
+            chThree = []
+            chFour = []
+            ref = []
+            timeSt = []
+            
+            for inner in EEG_data:
+                chOne.append(inner[0])
+                chTwo.append(inner[1])
+                chThree.append(inner[2])
+                chFour.append(inner[3])
+                ref.append(inner[4])
+                timeSt.append(inner[5])
+            
+            curr = processData(chOne, chTwo, chThree, chFour, ref, timeSt)
 
             if curr < lowerBound or curr > upperBound:
                 print("xd")
