@@ -10,7 +10,7 @@ GPIO.setup(led,GPIO.OUT)
 
 # Flash
 GPIO.output(led,GPIO.HIGH)
-time.sleep(1)
+time.sleep(60)
 GPIO.output(led,GPIO.LOW)
 
 GPIO.cleanup()
