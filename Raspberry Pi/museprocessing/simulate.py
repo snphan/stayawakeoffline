@@ -118,7 +118,7 @@ def get_input_path():
     cwd = Path(__file__).resolve().parent
     return filedialog.askopenfilename(initialdir=cwd, title="Select the Input Data") 
 
-
+#==================================================
 if __name__ == "__main__":
     input_path = Path(get_input_path())
     data = pd.read_csv(input_path, index_col=0)
