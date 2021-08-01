@@ -24,64 +24,12 @@ def format_fft_data(EEG_data):
 
 # Drop negative Fourier
     freq = freq[0:int(len(freq)/2)]
-    FFT_data = fftdata[0:int(len(FFT_data)/2)]
+    FFT_data = FFT_data[0:int(len(FFT_data)/2)]
     FFT_data=np.sqrt(FFT_data.real**2 + FFT_data.imag**2)
     return freq,FFT_data
 
 
 #==================================================
-
-    pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def calc_beta_alpha_ratio(freq, FFT_data):
@@ -100,7 +48,7 @@ def calc_beta_alpha_ratio(freq, FFT_data):
     beta_power/alpha_power: float
     '''
 
-    bands = {'alpha': (13,20), 'beta':(8,12)} # From literature
+    bands = {'beta': (13,30), 'alpha':(8,12)} # From literature
 
     alpha_inds = np.where((freq >= bands['alpha'][0]) & (freq >= bands['alpha'][1]))
     beta_inds = np.where((freq >= bands['beta'][0]) & (freq >= bands['beta'][1]))
@@ -112,4 +60,3 @@ def calc_beta_alpha_ratio(freq, FFT_data):
     return beta_power/alpha_power
 
 
-calc_beta

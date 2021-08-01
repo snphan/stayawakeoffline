@@ -27,21 +27,21 @@ def gen_ba_ratios(time, eeg):
     
     '''
 
-    CHUNK_LENGTH = 100
+    CHUNK_LENGTH = 256
     chunked_time = list(chunks(time, CHUNK_LENGTH)) 
     chunked_eeg = list(chunks(eeg, CHUNK_LENGTH)) 
 
     chunked_freqs = []
-    chunked_amplitudes = []
+    chunked_magnitudes = []
 
     # FFT all of the chunks
     for i in range(len(chunked_time)):
-        freq, amplitude = prep.format_fft_data(chunked_time[i], chunked_eeg[i])
+        freq, magnitude = prep.format_fft_data(chunked_eeg[i])
         chunked_freqs.append(freq)
-        chunked_amplitudes.append(amplitude)
+        chunked_magnitudes.append(magnitude)
 
     # Find the beta/alpha ratios for all of the chunks
-    ba_ratios = [prep.calc_beta_alpha_ratio(chunked_freqs[i], chunked_amplitudes[i]) for i in range(chunked_freqs)]
+    ba_ratios = [prep.calc_beta_alpha_ratio(chunked_freqs[i], chunked_magnitudes[i]) for i in range(len(chunked_freqs))]
 
     # The time of b/a will be taken as the first element of each chunk
     times = [chunked_time[i][0] for i in range(len(chunked_time))]
