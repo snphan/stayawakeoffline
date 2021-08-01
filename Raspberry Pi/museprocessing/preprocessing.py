@@ -8,8 +8,8 @@ def add(a, b):
 
 def filterNoise(li, lowerBound, upperBound):
     for ele in li:
-        if ele < lowerBound or ele > upperBound
-        li.remove(ele)
+        if ele < lowerBound or ele > upperBound:
+            li.remove(ele)
     return li
 
 def format_fft_data(EEG_data):
