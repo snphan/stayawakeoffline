@@ -9,10 +9,25 @@ def add(a, b):
 
 def format_fft_data(EEG_data):
     '''Should output the x and y fourier transform data.
-    input: 
+    input:
     '''
 #==================================================
 # INSERT CODE HERE
+# Download from the internet if not already installed
+
+
+
+    samples_per_sec = 256
+
+    FFT_data = np.fft.fft(EEG_data)
+    freq = np.fft.fftfreq(len(EEG_data))*samples_per_sec
+
+# Drop negative Fourier
+    freq = freq[0:int(len(freq)/2)]
+    FFT_data = fftdata[0:int(len(FFT_data)/2)]
+    FFT_data=np.sqrt(FFT_data.real**2 + FFT_data.imag**2)
+    return freq,FFT_data
+
 
 #==================================================
 
@@ -97,3 +112,4 @@ def calc_beta_alpha_ratio(freq, FFT_data):
     return beta_power/alpha_power
 
 
+calc_beta
