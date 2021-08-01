@@ -2,4 +2,7 @@
 '''
 
 def add(a, b):
+    '''A dummy function to test if the pytests library is working'''
     return a+b
+
+
