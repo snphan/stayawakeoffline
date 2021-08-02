@@ -114,6 +114,7 @@ def main():
                 if endFlag == 0:
                     endFlag = 1
                     GPIO.output(led,GPIO.LOW)
+                    print('Stay Awake Offline - Link Stopped.')
                     time.sleep(2)
                 else:
                     endFlag = 0
