@@ -69,7 +69,7 @@ pycosat==0.6.3
 pycparser==2.20
 pygatt==4.0.5
 Pygments==2.9.0
-pylsl==1.14.0
+pylsl==1.10.5
 pyOpenSSL==20.0.0
 pyparsing==2.4.7
 pypiwin32==223

@@ -5,8 +5,6 @@ import RPi.GPIO as GPIO
 import numpy as np
 from museprocessing import preprocessing as prep
 
-lowerBound = 0.75
-endFlag = 0
 
 def processData(chOne, chTwo, chThree, chFour, ref, timeSt): #bluetooth params passed????
     #process data from muse, take only the frontal lobe channels 2 and 3
@@ -20,6 +18,11 @@ def processData(chOne, chTwo, chThree, chFour, ref, timeSt): #bluetooth params p
     #returns data from muse as single or tuples of frequencies
 
 def main():
+    
+    lowerBound = 0.75
+    endFlag = 1
+
+    
     GPIO.cleanup()
 
     #bluetooth connection stuff/lib start--------------->
@@ -73,6 +76,8 @@ def main():
                 timeSt.append(inner[5])
             
             curr = processData(chOne, chTwo, chThree, chFour, ref, timeSt)
+            print(curr)
+            
             if curr < lowerBound:
                 pwm.start(50)
                 time.sleep(0.5)
