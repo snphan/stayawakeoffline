@@ -51,12 +51,13 @@ def main():
     
     #<-------------end
     
-    #buffer--------------->
-    barBuff = []
-    
-    #<-------end
+
     
     while(True):
+        #buffer--------------->
+        barBuff = []
+        #<-------end
+        
         if GPIO.input(button) == 1:
             endFlag = 0
             GPIO.output(led,GPIO.HIGH)
@@ -82,9 +83,10 @@ def main():
             curr = processData(chOne, chTwo, chThree, chFour, ref, timeSt)
             print(curr)
             
-            if len(barBuff) < 5:
+            if len(barBuff) < 4:
                 barBuff.append(curr)
             else:
+                barBuff.append(curr)
                 temp = 0
                 
                 for el in barBuff:
