@@ -22,7 +22,7 @@ def main():
     lowerBound = 0.75
     endFlag = 1
 
-    
+    GPIO.setwarnings(False)
     GPIO.cleanup()
 
     #bluetooth connection stuff/lib start--------------->
@@ -30,10 +30,10 @@ def main():
     M_wrapper = MW (loop = loop,
         target_name = None,
         timeout = 10,
-        max_buff_len = 500) 
+        max_buff_len = 750) 
         
     M_wrapper.search_and_connect()
-    print("uygutyguyguyguy")
+    print("Connected Successfully!")
     
     #<------end
     
@@ -61,6 +61,7 @@ def main():
         if GPIO.input(button) == 1:
             endFlag = 0
             GPIO.output(led,GPIO.HIGH)
+            print('Stay Awake Offline - Link Started!')
             time.sleep(2)
         while endFlag == 0:
             time.sleep(3) 
@@ -92,16 +93,22 @@ def main():
                 for el in barBuff:
                     if el < lowerBound:
                         temp = temp + 1
+
+                print("--------bar Buff start--------")
+                print(barBuff)
+                print("---------bar Buff end---------")
                 
                 if temp > 2:
+                    print('Driver is inattentive. Beeping to alert.')
                     pwm.start(50)
                     time.sleep(1)
                     pwm.ChangeDutyCycle(0)
                     #make beep sound
-                print("---------bar Buff start-------")
-                print(barBuff)
-                print("-------bar Buff end--------")
+                else:
+                    print('Driver is fully awake. No beep.')
+
                 barBuff = []
+                
 
             if GPIO.input(button) == 1:
                 if endFlag == 0:
