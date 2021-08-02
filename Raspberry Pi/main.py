@@ -51,6 +51,10 @@ def main():
     
     #<-------------end
     
+    #buffer--------------->
+    barBuff = []
+    
+    #<-------end
     
     while(True):
         if GPIO.input(button) == 1:
@@ -78,11 +82,24 @@ def main():
             curr = processData(chOne, chTwo, chThree, chFour, ref, timeSt)
             print(curr)
             
-            if curr < lowerBound:
-                pwm.start(50)
-                time.sleep(0.5)
-                pwm.ChangeDutyCycle(0)
-                #make beep sound
+            if len(barBuff) < 5:
+                barBuff.append(curr)
+            else:
+                temp = 0
+                
+                for el in barBuff:
+                    if el < lowerBound:
+                        temp = temp + 1
+                
+                if temp > 2:
+                    pwm.start(50)
+                    time.sleep(1)
+                    pwm.ChangeDutyCycle(0)
+                    #make beep sound
+                print("---------bar Buff start-------")
+                print(barBuff)
+                print("-------bar Buff end--------")
+                barBuff = []
 
             if GPIO.input(button) == 1:
                 if endFlag == 0:
