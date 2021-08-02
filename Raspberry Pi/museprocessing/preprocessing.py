@@ -91,72 +91,11 @@ def get_data():
 #==================================================
 
 if __name__ == '__main__':
-    # CHUNK_LENGTH = 5*256
-    # STEP = 30
-    # data = get_data()
 
-    # timestamps, channel_data = list(data['Time']), list(data['Channel 3'])
-
-    # timestamps = list(np.asarray(timestamps)-timestamps[0])
-    # chunked_freq = []
-    # chunked_fft = []
-    # chunked_time = []
-    # for i in range(0, len(channel_data), STEP):
-    #     freq, FFT_data = format_fft_data(channel_data[i:i+CHUNK_LENGTH])
-    #     chunked_time.append(timestamps[i:i+CHUNK_LENGTH])
-    #     chunked_freq.append(freq)
-    #     chunked_fft.append(FFT_data)
-    #     # plot_fft(freq, FFT_data, data.index.name)
-
-    # fig = plt.figure()
-    # fig.suptitle(data.index.name)
-    # ax = plt.axes(xlim=(0, 100), ylim=(-2, 1000))
-    # ax.xaxis.set_major_locator(MultipleLocator(10))
-    # ax.xaxis.set_major_formatter('{x:.0f}')
-    # ax.xaxis.set_minor_locator(MultipleLocator(5))
-    # ax.set(ylabel="|F|", xlabel="Freq (Hz)")
-    # ax.axvline(12, color='red')
-    # ax.axvline(30, color='red')
-    # ax.axvline(8, color='red')
-    # ax.text(8, 800, 'Alpha', rotation=90, color='red')
-    # ax.text(22, 800, 'Beta', rotation=90, color='red')
-    # line, = ax.plot([],[], lw=2)
-
-
-    # def init():
-    #     line.set_data([],[])
-    #     return line, 
-
-    # def animate_fft(i):
-    #     x = chunked_freq[i]
-    #     y = chunked_fft[i]
-    #     print(' '*100, end='\r', flush=True)
-    #     print(calc_beta_alpha_ratio(chunked_freq[i], chunked_fft[i]), end='\r', flush=True)
-    #     line.set_data(x,y)
-    #     ax.set_title(f'@{chunked_time[i][0]}s')
-    #     return line,
-
-    # anim = FuncAnimation(fig, animate_fft, init_func=init, frames=len(chunked_freq), interval=100, blit=False, repeat=False)
-
-    # plt.show()
-
-#==================================================
-#==================================================
     loop = asyncio.get_event_loop()
     M_wrapper = MuseWrapper(loop=loop, target_name=None, timeout=10, max_buff_len=5000)
     M_wrapper.search_and_connect()
-
-    # timestamps = list(np.asarray(timestamps)-timestamps[0])
-    # chunked_freq = []
-    # chunked_fft = []
-    # chunked_time = []
-    # for i in range(0, len(channel_data), STEP):
-    #     freq, FFT_data = format_fft_data(channel_data[i:i+CHUNK_LENGTH])
-    #     chunked_time.append(timestamps[i:i+CHUNK_LENGTH])
-    #     chunked_freq.append(freq)
-    #     chunked_fft.append(FFT_data)
-    #     # plot_fft(freq, FFT_data, data.index.name)
-
+    
     fig = plt.figure()
     fig.suptitle('Live Data')
     ax = plt.axes(xlim=(0, 100), ylim=(-2, 1000))
