@@ -5,8 +5,7 @@ import RPi.GPIO as GPIO
 import numpy as np
 from museprocessing import preprocessing as prep
 
-lowerBound = 100
-upperBound = 200
+lowerBound = 0.75
 endFlag = 0
 
 def processData(chOne, chTwo, chThree, chFour, ref, timeSt): #bluetooth params passed????
@@ -74,7 +73,7 @@ def main():
                 timeSt.append(inner[5])
             
             curr = processData(chOne, chTwo, chThree, chFour, ref, timeSt)
-            if curr < lowerBound or curr > upperBound:
+            if curr < lowerBound:
                 pwm.start(50)
                 time.sleep(0.5)
                 pwm.ChangeDutyCycle(0)
