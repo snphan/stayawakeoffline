@@ -114,14 +114,16 @@ def ba_overlap_window(time, eeg, step, window_len):
 #================================================== 
 # HELPER FUNCTIONS
 
-def get_input_path():
+def get_data():
     cwd = Path(__file__).resolve().parent
-    return filedialog.askopenfilename(initialdir=cwd, title="Select the Input Data") 
+    input_path = Path(filedialog.askopenfilename(initialdir=cwd, title="Select the Input Data"))
+    data = pd.read_csv(input_path, index_col=0)
+    data.index.name = input_path.name
+    return data
 
 #==================================================
 if __name__ == "__main__":
-    input_path = Path(get_input_path())
-    data = pd.read_csv(input_path, index_col=0)
+    data = get_data()
 
     # Process the second channel only:
     eeg_times, channel_2 = list(data['Time']), list(data['Channel 2'])
@@ -130,5 +132,5 @@ if __name__ == "__main__":
     plt.plot(times, ba_ratios)
     plt.xlabel('Time (s)')
     plt.ylabel('BA_ratios')
-    plt.title(input_path.name)
+    plt.title(data.index.name)
     plt.show()
