@@ -1,14 +1,22 @@
 from uvicmuse.MuseWrapper import MuseWrapper as MW
 import asyncio
 import time
+import numpy as np
+from museprocessing import preprocessing as prep
 
 lowerBound = 100
 upperBound = 200
 endFlag = False
 
 def processData(chOne, chTwo, chThree, chFour, ref, timeSt): #bluetooth params passed????
-    #process data from muse
-    return 150
+    #process data from muse, take only the frontal lobe channels 2 and 3
+    channelData = [chTwo, chThree]
+    baData = []
+    for channel in channelData:
+        freq, FFT_data = prep.format_fft_data(channel)
+        baData.append(prep.calc_beta_alpha_ratio(freq, FFT_data))
+
+    return np.mean(baData)
     #returns data from muse as single or tuples of frequencies
 
 def main():
@@ -44,7 +52,6 @@ def main():
                 timeSt.append(inner[5])
             
             curr = processData(chOne, chTwo, chThree, chFour, ref, timeSt)
-
             if curr < lowerBound or curr > upperBound:
                 print("xd")
                 #make beep sound
@@ -55,5 +62,5 @@ def main():
             
         #optional - delay timer for outer loop
 
-
-main()
+if __name__ == "__main__":
+    main()
