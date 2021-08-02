@@ -25,6 +25,11 @@ from datetime import datetime
 from pathlib import Path
 import os
 
+# Museprocessing
+import preprocessing as prep
+
+
+
 # ==================================================
 """ 
 TODO:
@@ -137,6 +142,79 @@ class MuseData(MuseWrapper):
             print("Saved to {}".format(current_dir.joinpath(
                     f"{TASK}-{SUBJECT_INITIALS}-{DATA_TYPES[ind]}-{self.sample_time}s.csv"
                 )))
+
+    def initialize_eegfft_ani(self):
+        '''Setup the eeg signal animation
+        '''
+        PLOT_WINDOW_YLIM = 400
+        PLOT_WINDOW_XLIM = 200
+        self.eeg_fig, self.eeg_axs = plt.subplots(
+            len(self.EEG_DATA_COLUMNS) - 1
+        )
+        self.eeg_fig.suptitle("Muse 2 EEG Data")
+        self.eeg_fig.tight_layout()
+        for ind, ax in enumerate(self.eeg_axs):
+            ax.set_title(self.EEG_DATA_COLUMNS[ind+1]) # Skip the timeestamp column
+            ax.set(ylabel="|F|")
+            ax.set_ylim([-PLOT_WINDOW_YLIM, PLOT_WINDOW_YLIM])
+            ax.axvline(12, color='red')
+            ax.axvline(30, color='red')
+            ax.axvline(8, color='red')
+        self.eeg_axs[len(self.eeg_axs) - 1].set(xlabel="Freq (Hz)")
+
+        xs = np.arange(0, PLOT_WINDOW_XLIM, 1)
+        ys = [[0] * len(xs) for i in range(len(self.eeg_axs))]
+
+        for ind, ax in enumerate(self.eeg_axs):
+            (line,) = ax.plot(xs, ys[ind])
+            self.eeg_lines.append(line)
+        
+        def animate_eegfft(i, ys, xs):
+            # Get data
+            if self.run_eeg_ani:
+                EEG_data = np.transpose(self.pull_eeg())
+                if len(EEG_data) > 0:
+                    if self.inital_eeg_timestamp == 0:
+                        # First time
+                        self.inital_eeg_timestamp = EEG_data[0][0]
+
+                    # Update the time 
+                    self.all_eeg_data['Time'] += list(EEG_data[0] - self.inital_eeg_timestamp)
+                    
+                    # Update all of the y data
+                    for ind, y in enumerate(ys):
+
+                        freq, FFT_data = prep.format_fft_data(EEG_data[i+1])
+                        print(ind)
+                        print(freq)
+                        print(FFT_data)
+                        self.eeg_lines[ind].set_data(freq, FFT_data)
+
+                    # Output the current time
+                    print(' '*50,end="\r", flush=True)
+                    print(f"Elapsed Time {self.all_eeg_data['Time'][-1]}", end="\r", flush="True")
+
+                    # Stop animation when finished collecting set number of seconds
+                    if self.all_eeg_data['Time'][-1] >= self.sample_time:
+                        self.eeg_fig.suptitle(
+                            f"Muse 2 EEG Data: Collection Complete! ~{self.sample_time}"
+                        )
+                        self.eegfft_ani.event_source.stop()
+            else: 
+                pass
+
+            return self.eeg_lines
+
+        self.eeg_ani = animation.FuncAnimation(
+            self.eeg_fig,
+            animate_eegfft,
+            fargs=(ys,xs),
+            interval =50,
+            frames = 200,
+            blit=True,
+            repeat=True,
+        )
+
 
     def initialize_eeg_ani(self):
         '''Setup the eeg signal animation
@@ -472,20 +550,21 @@ def main(mode="r"):
     SAMPLE_TIME = 600
     LABEL_INTERVAL = 300
     loop = asyncio.get_event_loop()
-    ten_data_collector = MuseData(loop=loop, sample_time=SAMPLE_TIME)
-    ten_data_collector.search_and_connect()
+    data_collector = MuseData(loop=loop, sample_time=SAMPLE_TIME)
+    data_collector.search_and_connect()
 
     # Beeping noise
     # beep_process = Process(target=beep, args=(LABEL_INTERVAL, SAMPLE_TIME))
     # beep_process.start()
 
-    ten_data_collector.initialize_eeg_ani()
-    ten_data_collector.initialize_accel_ani()
-    ten_data_collector.initialize_gyro_ani()
-    ten_data_collector.start_animations()
-    ten_data_collector.save_all_data()
+    # ten_data_collector.initialize_eeg_ani()
+    data_collector.initialize_eegfft_ani()
+    # ten_data_collector.initialize_accel_ani()
+    # ten_data_collector.initialize_gyro_ani()
+    data_collector.start_animations()
+    # ten_data_collector.save_all_data()
     # beep_process.terminate()
-    ten_data_collector.disconnect()
+    data_collector.disconnect()
 
 # ==================================================
 # ==================================================
